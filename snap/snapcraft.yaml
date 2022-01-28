@@ -13,6 +13,10 @@ confinement: strict
 grade: devel
 version: "10.7.7"
 license: GPL-2.0
+architectures:
+  - build-on: arm64
+  - build-on: armhf
+  - build-on: amd64
 
 parts:
   jellyfin:
