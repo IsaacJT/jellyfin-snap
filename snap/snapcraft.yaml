@@ -10,7 +10,7 @@ description: |
   attached. Your media, your server, your way.
 base: core20
 confinement: strict
-grade: devel
+grade: stable
 version: "10.7.7"
 license: GPL-2.0
 architectures:
