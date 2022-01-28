@@ -1,4 +1,7 @@
 ---
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2021 Canonical Ltd
+
 name: itrue-jellyfin
 summary:  "Jellyfin: The Free Software Media System"
 description: |
