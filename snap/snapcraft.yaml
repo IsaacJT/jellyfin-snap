@@ -1,0 +1,47 @@
+---
+name: itrue-jellyfin
+summary:  "Jellyfin: The Free Software Media System"
+description: |
+  Jellyfin is the volunteer-built media solution that puts you in control of
+  your media. Stream to any device from your own server, with no strings
+  attached. Your media, your server, your way.
+base: core20
+confinement: strict
+grade: devel
+version: "10.7.7"
+license: GPL-2.0
+
+parts:
+  jellyfin:
+    plugin: nil
+    source: https://repo.jellyfin.org/releases/server/linux/stable/combined/jellyfin_${SNAPCRAFT_PROJECT_VERSION}_${SNAPCRAFT_TARGET_ARCH}.tar.gz
+    override-build: |
+      snapcraftctl build
+
+      mkdir -p ${SNAPCRAFT_PART_INSTALL}/opt
+      cp -r ${SNAPCRAFT_PART_BUILD}/jellyfin_${SNAPCRAFT_PROJECT_VERSION} \
+        ${SNAPCRAFT_PART_INSTALL}/opt/jellyfin
+    stage-packages:
+      - liblttng-ust0
+      - libcurl4
+      - libfontconfig1
+      - libfreetype6
+      - libicu66
+      - ffmpeg
+      - freeglut3
+      - libglu1-mesa
+
+apps:
+  server:
+    command: opt/jellyfin/jellyfin
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
+      - home
+    environment:
+      DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+      JELLYFIN_CACHE_DIR: "${SNAP_DATA}/cache"
+      JELLYFIN_CONFIG_DIR: "${SNAP_COMMON}/config"
+      JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
+      JELLYFIN_LOG_DIR: "${SNAP_DATA}/logs"
