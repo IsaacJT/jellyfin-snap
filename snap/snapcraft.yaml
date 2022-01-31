@@ -37,6 +37,10 @@ parts:
       - ffmpeg
       - freeglut3
       - libglu1-mesa
+      - libpulse0
+      # - libva-glx2
+      # - vainfo
+      # - mesa-va-drivers
 
 apps:
   server:
@@ -47,9 +51,13 @@ apps:
       - network-bind
       - home
       - opengl
+      - removable-storage
     environment:
-      DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+      JELLYFIN_LOG_DIR: "${SNAP_DATA}/logs"
       JELLYFIN_CACHE_DIR: "${SNAP_DATA}/cache"
       JELLYFIN_CONFIG_DIR: "${SNAP_COMMON}/config"
       JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
-      JELLYFIN_LOG_DIR: "${SNAP_DATA}/logs"
+  # vainfo:
+  #   command: usr/bin/vainfo
+  #   plugs:
+  #     - opengl
