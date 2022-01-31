@@ -51,7 +51,7 @@ apps:
       - network-bind
       - home
       - opengl
-      - removable-storage
+      - removable-media
     environment:
       JELLYFIN_LOG_DIR: "${SNAP_DATA}/logs"
       JELLYFIN_CACHE_DIR: "${SNAP_DATA}/cache"
