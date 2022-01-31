@@ -38,9 +38,9 @@ parts:
       - freeglut3
       - libglu1-mesa
       - libpulse0
-      # - libva-glx2
-      # - vainfo
-      # - mesa-va-drivers
+      - libva-glx2
+      - vainfo
+      - mesa-va-drivers
 
 apps:
   server:
@@ -57,7 +57,11 @@ apps:
       JELLYFIN_CACHE_DIR: "${SNAP_COMMON}/cache"
       JELLYFIN_CONFIG_DIR: "${SNAP_COMMON}/config"
       JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
-  # vainfo:
-  #   command: usr/bin/vainfo
-  #   plugs:
-  #     - opengl
+  vainfo:
+    command: usr/bin/vainfo
+    plugs:
+      - opengl
+
+layout:
+  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET:
+    bind: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET
