@@ -54,7 +54,7 @@ apps:
       - removable-media
     environment:
       JELLYFIN_LOG_DIR: "${SNAP_DATA}/logs"
-      JELLYFIN_CACHE_DIR: "${SNAP_DATA}/cache"
+      JELLYFIN_CACHE_DIR: "${SNAP_COMMON}/cache"
       JELLYFIN_CONFIG_DIR: "${SNAP_COMMON}/config"
       JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
   # vainfo:
