@@ -8,6 +8,11 @@ description: |
   Jellyfin is the volunteer-built media solution that puts you in control of
   your media. Stream to any device from your own server, with no strings
   attached. Your media, your server, your way.
+
+  ---
+
+  This is a community-developed snap and not officially supported or released
+  by Jellyfin.
 base: core20
 confinement: strict
 grade: stable
