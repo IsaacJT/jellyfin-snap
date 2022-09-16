@@ -22,6 +22,7 @@ architectures:
   - build-on: arm64
   - build-on: armhf
   - build-on: amd64
+compression: lzo
 
 parts:
   jellyfin:
