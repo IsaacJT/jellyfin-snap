@@ -47,6 +47,9 @@ parts:
       - libva-glx2
       - vainfo
       - mesa-va-drivers
+    prime:
+      - -usr/share/doc
+      - -usr/share/man
 
 apps:
   server:
