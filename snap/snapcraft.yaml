@@ -13,7 +13,7 @@ description: |
 
   This is a community-developed snap and not officially supported or released
   by Jellyfin.
-base: core20
+base: core22
 confinement: strict
 grade: stable
 version: "10.8.7"
@@ -27,19 +27,19 @@ compression: lzo
 parts:
   jellyfin:
     plugin: nil
-    source: https://repo.jellyfin.org/releases/server/linux/stable/combined/jellyfin_${SNAPCRAFT_PROJECT_VERSION}_${SNAPCRAFT_TARGET_ARCH}.tar.gz
+    source: https://repo.jellyfin.org/releases/server/linux/stable/combined/jellyfin_${SNAPCRAFT_PROJECT_VERSION}_${CRAFT_TARGET_ARCH}.tar.gz
     override-build: |
-      snapcraftctl build
+      craftctl default
 
-      mkdir -p ${SNAPCRAFT_PART_INSTALL}/opt
-      cp -r ${SNAPCRAFT_PART_BUILD}/jellyfin_${SNAPCRAFT_PROJECT_VERSION} \
-        ${SNAPCRAFT_PART_INSTALL}/opt/jellyfin
+      mkdir -p ${CRAFT_PART_INSTALL}/opt
+      cp -r ${CRAFT_PART_BUILD}/jellyfin_${SNAPCRAFT_PROJECT_VERSION} \
+        ${CRAFT_PART_INSTALL}/opt/jellyfin
     stage-packages:
-      - liblttng-ust0
+      - liblttng-ust1
       - libcurl4
       - libfontconfig1
       - libfreetype6
-      - libicu66
+      - libicu70
       - ffmpeg
       - freeglut3
       - libglu1-mesa
@@ -74,9 +74,9 @@ apps:
 
 # Mount some directories to fix the hard-coded paths
 layout:
-  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio:
-    bind: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio
-  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/dri:
-    bind: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/dri
+  /usr/lib/$CRAFT_ARCH_TRIPLET/pulseaudio:
+    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/pulseaudio
+  /usr/lib/$CRAFT_ARCH_TRIPLET/dri:
+    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/dri
   /usr/share/libdrm:
     bind: $SNAP/usr/share/libdrm
