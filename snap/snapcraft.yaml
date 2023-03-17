@@ -76,6 +76,7 @@ apps:
       JELLYFIN_CACHE_DIR: "${SNAP_COMMON}/cache"
       JELLYFIN_CONFIG_DIR: "${SNAP_COMMON}/config"
       JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
+      FONTCONFIG_PATH: "${SNAP}/etc/fonts"
   vainfo:
     command: usr/bin/vainfo
     plugs:
