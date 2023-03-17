@@ -32,7 +32,7 @@ parts:
       craftctl default
 
       mkdir -p ${CRAFT_PART_INSTALL}/opt
-      cp -r ${CRAFT_PART_BUILD}/jellyfin_${SNAPCRAFT_PROJECT_VERSION} \
+      cp -r ${CRAFT_PART_BUILD}/jellyfin_$(craftctl get version) \
         ${CRAFT_PART_INSTALL}/opt/jellyfin
     stage-packages:
       - liblttng-ust1
