@@ -76,7 +76,6 @@ apps:
       JELLYFIN_CACHE_DIR: "${SNAP_COMMON}/cache"
       JELLYFIN_CONFIG_DIR: "${SNAP_COMMON}/config"
       JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
-      FONTCONFIG_PATH: "${SNAP}/etc/fonts"
   vainfo:
     command: usr/bin/vainfo
     plugs:
@@ -90,3 +89,7 @@ layout:
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/dri
   /usr/share/libdrm:
     bind: $SNAP/usr/share/libdrm
+  /usr/share/fonts:
+    bind: $SNAP/usr/share/fonts
+  /etc/fonts:
+    bind: $SNAP/etc/fonts
