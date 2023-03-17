@@ -69,6 +69,7 @@ apps:
       JELLYFIN_CACHE_DIR: "${SNAP_COMMON}/cache"
       JELLYFIN_CONFIG_DIR: "${SNAP_COMMON}/config"
       JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
+      LD_LIBRARY_PATH: "${SNAP}/usr/lib/${CRAFT_ARCH_TRIPLET}/blas:${SNAP}/usr/lib/${CRAFT_ARCH_TRIPLET}/lapack:${LD_LIBRARY_PATH}"
   vainfo:
     command: usr/bin/vainfo
     plugs:
