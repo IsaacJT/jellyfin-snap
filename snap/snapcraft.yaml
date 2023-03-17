@@ -45,6 +45,8 @@ parts:
       - libglu1-mesa
       - libpulse0
       - libva-glx2
+      - liblapack3
+      - libblas3
       - vainfo
       - mesa-va-drivers
     prime:
