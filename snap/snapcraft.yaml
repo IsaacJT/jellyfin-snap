@@ -35,7 +35,6 @@ parts:
       cp -r ${CRAFT_PART_BUILD}/jellyfin_$(craftctl get version) \
         ${CRAFT_PART_INSTALL}/opt/jellyfin
     stage-packages:
-      - liblttng-ust1
       - libcurl4
       - libfontconfig1
       - libfreetype6
@@ -51,6 +50,8 @@ parts:
       - mesa-va-drivers
     prime:
       - -usr/share/man
+      # This library is unused and links against another library which doesn't exist in 22.04
+      - -opt/jellyfin/libcoreclrtraceptprovider.so
 
 apps:
   server:
