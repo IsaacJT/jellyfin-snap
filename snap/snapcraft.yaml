@@ -24,45 +24,31 @@ architectures:
   - build-on: amd64
 compression: lzo
 
+package-repositories:
+  - type: apt
+    url: https://repo.jellyfin.org/ubuntu
+    suites: [jammy]
+    components: [main]
+    key-id: 4918AABC486CA052358D778D49023CD01DE21A7B
+
 parts:
   jellyfin:
     plugin: nil
-    source: https://repo.jellyfin.org/releases/server/linux/stable/combined/jellyfin_${SNAPCRAFT_PROJECT_VERSION}_${CRAFT_TARGET_ARCH}.tar.gz
-    override-build: |
-      craftctl default
-
-      mkdir -p ${CRAFT_PART_INSTALL}/opt
-      cp -r ${CRAFT_PART_BUILD}/jellyfin_$(craftctl get version) \
-        ${CRAFT_PART_INSTALL}/opt/jellyfin
-
-      # Correct links for libblas3/liblapack
-
-      ln -svr ${CRAFT_PART_INSTALL}/usr/lib/${CRAFT_ARCH_TRIPLET}/blas/libblas.so.3 \
-        ${CRAFT_PART_INSTALL}/usr/lib/${CRAFT_ARCH_TRIPLET}/
-      ln -svr ${CRAFT_PART_INSTALL}/usr/lib/${CRAFT_ARCH_TRIPLET}/lapack/liblapack.so.3 \
-        ${CRAFT_PART_INSTALL}/usr/lib/${CRAFT_ARCH_TRIPLET}/
     stage-packages:
-      - libcurl4
-      - libfontconfig1
-      - libfreetype6
-      - libicu70
-      - ffmpeg
-      - freeglut3
-      - libglu1-mesa
-      - libpulse0
-      - libva-glx2
-      - liblapack3
-      - libblas3
-      - vainfo
-      - mesa-va-drivers
+      - jellyfin-server:${CRAFT_TARGET_ARCH}
+      - jellyfin-web:${CRAFT_TARGET_ARCH}
+      - jellyfin-ffmpeg6:${CRAFT_TARGET_ARCH}
+      - va-driver-all:${CRAFT_TARGET_ARCH}
+      - libavcodec58:${CRAFT_TARGET_ARCH}
+      - libavcodec-extra58:${CRAFT_TARGET_ARCH}
     prime:
       - -usr/share/man
       # This library is unused and links against another library which doesn't exist in 22.04
-      - -opt/jellyfin/libcoreclrtraceptprovider.so
+      - -usr/lib/jellyfin/bin/libcoreclrtraceptprovider.so
 
 apps:
   server:
-    command: opt/jellyfin/jellyfin
+    command: usr/lib/jellyfin/bin/jellyfin --ffmpeg $SNAP/usr/lib/jellyfin-ffmpeg/ffmpeg --restartpath $SNAP/usr/lib/jellyfin/restart.sh
     daemon: simple
     plugs:
       - network
@@ -76,12 +62,15 @@ apps:
       JELLYFIN_CACHE_DIR: "${SNAP_COMMON}/cache"
       JELLYFIN_CONFIG_DIR: "${SNAP_COMMON}/config"
       JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
+      JELLYFIN_WEB_DIR: "${SNAP}/usr/share/jellyfin/web"
+      LD_LIBRARY_PATH: "${LD_LIBRARY_PATH}:${SNAP}/usr/lib/jellyfin-ffmpeg/lib"
   vainfo:
-    command: usr/bin/vainfo
+    command: usr/lib/jellyfin-ffmpeg/vainfo
+    environment:
+      LD_LIBRARY_PATH: "${LD_LIBRARY_PATH}:${SNAP}/usr/lib/jellyfin-ffmpeg/lib"
     plugs:
       - opengl
 
-# Mount some directories to fix the hard-coded paths
 layout:
   /usr/lib/$CRAFT_ARCH_TRIPLET/pulseaudio:
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/pulseaudio
@@ -93,3 +82,7 @@ layout:
     bind: $SNAP/usr/share/fonts
   /etc/fonts:
     bind: $SNAP/etc/fonts
+  /etc/igfx_user_feature_next.txt:
+    bind-file: $SNAP_DATA/igfx_user_feature_next.txt
+  /etc/vdpau_wrapper.cfg:
+    bind-file: $SNAP/etc/vdpau_wrapper.cfg
