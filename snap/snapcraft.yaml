@@ -69,12 +69,6 @@ apps:
       JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
       JELLYFIN_WEB_DIR: "${SNAP}/usr/share/jellyfin/web"
       LD_LIBRARY_PATH: "${LD_LIBRARY_PATH}:${SNAP}/usr/lib/jellyfin-ffmpeg/lib"
-  vainfo:
-    command: usr/lib/jellyfin-ffmpeg/vainfo
-    environment:
-      LD_LIBRARY_PATH: "${LD_LIBRARY_PATH}:${SNAP}/usr/lib/jellyfin-ffmpeg/lib"
-    plugs:
-      - opengl
 
 layout:
   /usr/lib/$CRAFT_ARCH_TRIPLET/pulseaudio:
