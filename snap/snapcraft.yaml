@@ -30,13 +30,17 @@ package-repositories:
     suites: [jammy]
     components: [main]
     key-id: 4918AABC486CA052358D778D49023CD01DE21A7B
+    architectures:
+      - arm64
+      - armhf
+      - amd64
 
 parts:
   jellyfin:
     plugin: nil
     stage-packages:
       - jellyfin-server:${CRAFT_TARGET_ARCH}
-      - jellyfin-web:${CRAFT_TARGET_ARCH}
+      - jellyfin-web:all
       - jellyfin-ffmpeg6:${CRAFT_TARGET_ARCH}
       - va-driver-all:${CRAFT_TARGET_ARCH}
       - libavcodec58:${CRAFT_TARGET_ARCH}
