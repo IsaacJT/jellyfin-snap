@@ -68,7 +68,6 @@ apps:
       JELLYFIN_CONFIG_DIR: "${SNAP_COMMON}/config"
       JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
       JELLYFIN_WEB_DIR: "${SNAP}/usr/share/jellyfin/web"
-      LD_LIBRARY_PATH: "${LD_LIBRARY_PATH}:${SNAP}/usr/lib/jellyfin-ffmpeg/lib"
 
 layout:
   /usr/lib/$CRAFT_ARCH_TRIPLET/pulseaudio:
@@ -85,3 +84,5 @@ layout:
     bind-file: $SNAP_DATA/igfx_user_feature_next.txt
   /etc/vdpau_wrapper.cfg:
     bind-file: $SNAP/etc/vdpau_wrapper.cfg
+  /usr/lib/jellyfin-ffmpeg:
+    bind: $SNAP/usr/lib/jellyfin-ffmpeg
