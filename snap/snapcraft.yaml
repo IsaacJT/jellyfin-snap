@@ -62,6 +62,7 @@ apps:
       - opengl
       - removable-media
       - mount-observe
+      - firewall-control
     environment:
       JELLYFIN_LOG_DIR: "${SNAP_DATA}/logs"
       JELLYFIN_CACHE_DIR: "${SNAP_COMMON}/cache"
