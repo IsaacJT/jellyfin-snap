@@ -16,7 +16,7 @@ description: |
 base: core22
 confinement: strict
 grade: stable
-version: "10.8.10"
+version: "10.8.12"
 license: GPL-2.0
 architectures:
   - build-on: arm64
