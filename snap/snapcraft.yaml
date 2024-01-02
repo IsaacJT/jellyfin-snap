@@ -15,8 +15,7 @@ description: |
   by Jellyfin.
 base: core22
 confinement: strict
-grade: stable
-version: "10.8.13"
+adopt-info: jellyfin
 license: GPL-2.0
 architectures:
   - build-on: arm64
@@ -44,6 +43,10 @@ parts:
       - va-driver-all:${CRAFT_TARGET_ARCH}
       - libavcodec58:${CRAFT_TARGET_ARCH}
       - libavcodec-extra58:${CRAFT_TARGET_ARCH}
+    override-build: |
+      craftctl default
+      craftctl set grade="stable"
+      craftctl set version="$(apt info jellyfin-server | grep -E "^Version:" | cut -f2 -d\ )"
     prime:
       - -usr/share/man
       - -var/spool
