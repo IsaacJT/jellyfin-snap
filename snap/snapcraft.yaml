@@ -54,7 +54,7 @@ parts:
       - -usr/lib/jellyfin/bin/libcoreclrtraceptprovider.so
 
 apps:
-  server:
+  itrue-jellyfin:
     command: usr/lib/jellyfin/bin/jellyfin --ffmpeg $SNAP/usr/lib/jellyfin-ffmpeg/ffmpeg --restartpath $SNAP/usr/lib/jellyfin/restart.sh
     daemon: simple
     plugs:
