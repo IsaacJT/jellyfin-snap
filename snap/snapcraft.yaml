@@ -32,6 +32,13 @@ package-repositories:
       - arm64
       - armhf
       - amd64
+  - type: apt
+    url: https://repo.radeon.com/rocm/apt/latest
+    suites: [jammy]
+    components: [main]
+    key-id: CA8BB4727A47B4D09B4EE8969386B48A1A693C5C
+    architectures:
+      - amd64
 
 parts:
   jellyfin:
@@ -45,8 +52,10 @@ parts:
       - libavcodec-extra58:${CRAFT_TARGET_ARCH}
       - vainfo:${CRAFT_TARGET_ARCH}
       - libdrm-common:${CRAFT_TARGET_ARCH}
+      - clinfo:${CRAFT_TARGET_ARCH}
       - on amd64:
         - intel-opencl-icd:${CRAFT_TARGET_ARCH}
+        - rocm-opencl-runtime:${CRAFT_TARGET_ARCH}
     override-build: |
       craftctl default
       craftctl set grade="stable"
@@ -75,12 +84,24 @@ apps:
       JELLYFIN_CONFIG_DIR: "${SNAP_COMMON}/config"
       JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
       JELLYFIN_WEB_DIR: "${SNAP}/usr/share/jellyfin/web"
+      # Enable OpenCL on older AMD cards
+      ROC_ENABLE_PRE_VEGA: "1"
   vainfo:
     command: usr/bin/vainfo
+    environment:
+      ROC_ENABLE_PRE_VEGA: "1"
     plugs:
       - opengl
   ffmpeg:
     command: usr/lib/jellyfin-ffmpeg/ffmpeg
+    environment:
+      ROC_ENABLE_PRE_VEGA: "1"
+    plugs:
+      - opengl
+  clinfo:
+    command: usr/bin/clinfo
+    environment:
+      ROC_ENABLE_PRE_VEGA: "1"
     plugs:
       - opengl
 
@@ -89,8 +110,8 @@ layout:
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/pulseaudio
   /usr/lib/$CRAFT_ARCH_TRIPLET/dri:
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/dri
-  /usr/share/libdrm:
-    bind: $SNAP/usr/share/libdrm
+  /usr/share/libdrm/amdgpu.ids:
+    bind-file: $SNAP/usr/share/libdrm/amdgpu.ids
   /usr/share/fonts:
     bind: $SNAP/usr/share/fonts
   /etc/fonts:
@@ -103,3 +124,5 @@ layout:
     bind: $SNAP/usr/lib/jellyfin-ffmpeg
   /etc/OpenCL:
     bind: $SNAP/etc/OpenCL
+  /opt:
+    bind: $SNAP/opt
