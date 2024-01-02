@@ -43,6 +43,10 @@ parts:
       - va-driver-all:${CRAFT_TARGET_ARCH}
       - libavcodec58:${CRAFT_TARGET_ARCH}
       - libavcodec-extra58:${CRAFT_TARGET_ARCH}
+      - vainfo:${CRAFT_TARGET_ARCH}
+      - libdrm-common:${CRAFT_TARGET_ARCH}
+      - on amd64:
+        - intel-opencl-icd:${CRAFT_TARGET_ARCH}
     override-build: |
       craftctl default
       craftctl set grade="stable"
@@ -71,6 +75,14 @@ apps:
       JELLYFIN_CONFIG_DIR: "${SNAP_COMMON}/config"
       JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
       JELLYFIN_WEB_DIR: "${SNAP}/usr/share/jellyfin/web"
+  vainfo:
+    command: usr/bin/vainfo
+    plugs:
+      - opengl
+  ffmpeg:
+    command: usr/lib/jellyfin-ffmpeg/ffmpeg
+    plugs:
+      - opengl
 
 layout:
   /usr/lib/$CRAFT_ARCH_TRIPLET/pulseaudio:
@@ -89,3 +101,5 @@ layout:
     bind-file: $SNAP/etc/vdpau_wrapper.cfg
   /usr/lib/jellyfin-ffmpeg:
     bind: $SNAP/usr/lib/jellyfin-ffmpeg
+  /etc/OpenCL:
+    bind: $SNAP/etc/OpenCL
