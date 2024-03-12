@@ -21,6 +21,9 @@ architectures:
   - build-on: arm64
   - build-on: armhf
   - build-on: amd64
+source-code: https://github.com/IsaacJT/jellyfin-snap/tree/main
+contact: isaac@is.having.coffee
+issues: https://github.com/IsaacJT/jellyfin-snap/issues
 
 package-repositories:
   - type: apt
