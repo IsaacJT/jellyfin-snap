@@ -47,18 +47,18 @@ parts:
   jellyfin:
     plugin: nil
     stage-packages:
-      - jellyfin-server:${CRAFT_TARGET_ARCH}
+      - jellyfin-server:${CRAFT_ARCH_BUILD_FOR}
       - jellyfin-web:all
-      - jellyfin-ffmpeg6:${CRAFT_TARGET_ARCH}
-      - va-driver-all:${CRAFT_TARGET_ARCH}
-      - libavcodec58:${CRAFT_TARGET_ARCH}
-      - libavcodec-extra58:${CRAFT_TARGET_ARCH}
-      - vainfo:${CRAFT_TARGET_ARCH}
-      - libdrm-common:${CRAFT_TARGET_ARCH}
-      - clinfo:${CRAFT_TARGET_ARCH}
+      - jellyfin-ffmpeg6:${CRAFT_ARCH_BUILD_FOR}
+      - va-driver-all:${CRAFT_ARCH_BUILD_FOR}
+      - libavcodec58:${CRAFT_ARCH_BUILD_FOR}
+      - libavcodec-extra58:${CRAFT_ARCH_BUILD_FOR}
+      - vainfo:${CRAFT_ARCH_BUILD_FOR}
+      - libdrm-common:${CRAFT_ARCH_BUILD_FOR}
+      - clinfo:${CRAFT_ARCH_BUILD_FOR}
       - on amd64:
-        - intel-opencl-icd:${CRAFT_TARGET_ARCH}
-        - rocm-opencl-runtime:${CRAFT_TARGET_ARCH}
+        - intel-opencl-icd:${CRAFT_ARCH_BUILD_FOR}
+        - rocm-opencl-runtime:${CRAFT_ARCH_BUILD_FOR}
     override-build: |
       craftctl default
       craftctl set grade="stable"
@@ -109,10 +109,10 @@ apps:
       - opengl
 
 layout:
-  /usr/lib/$CRAFT_ARCH_TRIPLET/pulseaudio:
-    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/pulseaudio
-  /usr/lib/$CRAFT_ARCH_TRIPLET/dri:
-    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/dri
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:
+    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri:
+    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri
   /usr/share/libdrm/amdgpu.ids:
     bind-file: $SNAP/usr/share/libdrm/amdgpu.ids
   /usr/share/fonts:
