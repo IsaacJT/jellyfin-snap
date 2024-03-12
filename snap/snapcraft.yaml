@@ -69,9 +69,19 @@ parts:
       # This library is unused and links against another library which doesn't exist in 22.04
       - -usr/lib/jellyfin/bin/libcoreclrtraceptprovider.so
 
+  scripts:
+    plugin: nil
+    source: scripts
+    build-packages:
+      - shellcheck
+    override-build: |
+      shellcheck "${CRAFT_PART_BUILD}"/*.sh
+      install -Dm0755 "${CRAFT_PART_BUILD}"/*.sh \
+        -t "${CRAFT_PART_INSTALL}"/usr/local/bin
+
 apps:
   itrue-jellyfin:
-    command: usr/lib/jellyfin/bin/jellyfin --ffmpeg $SNAP/usr/lib/jellyfin-ffmpeg/ffmpeg --restartpath $SNAP/usr/lib/jellyfin/restart.sh
+    command: usr/local/bin/jellyfin.sh
     daemon: simple
     plugs:
       - network
