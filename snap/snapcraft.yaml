@@ -97,26 +97,23 @@ apps:
       JELLYFIN_CONFIG_DIR: "${SNAP_COMMON}/config"
       JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
       JELLYFIN_WEB_DIR: "${SNAP}/usr/share/jellyfin/web"
-      # Enable OpenCL on older AMD cards
-      ROC_ENABLE_PRE_VEGA: "1"
   vainfo:
     command: usr/bin/vainfo
-    environment:
-      ROC_ENABLE_PRE_VEGA: "1"
     plugs:
       - opengl
   ffmpeg:
     command: usr/lib/jellyfin-ffmpeg/ffmpeg
-    environment:
-      ROC_ENABLE_PRE_VEGA: "1"
     plugs:
       - opengl
   clinfo:
     command: usr/bin/clinfo
     environment:
-      ROC_ENABLE_PRE_VEGA: "1"
     plugs:
       - opengl
+
+environment:
+  # Enable OpenCL on older AMD cards
+  ROC_ENABLE_PRE_VEGA: "1"
 
 layout:
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:
