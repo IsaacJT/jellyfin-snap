@@ -1,7 +1,7 @@
 #!/bin/sh -ex
 
-REQUIRED_INTERFACES="network network-bind firewall-control"
-OPTIONAL_INTERFACES="home removable-media mount-observe opengl"
+REQUIRED_INTERFACES="network network-bind"
+OPTIONAL_INTERFACES="home removable-media mount-observe opengl firewall-control"
 
 for intf in ${REQUIRED_INTERFACES}; do
         if ! snapctl is-connected "${intf}"; then
