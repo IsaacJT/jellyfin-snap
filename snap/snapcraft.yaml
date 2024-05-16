@@ -59,6 +59,7 @@ parts:
       - on amd64:
         - intel-opencl-icd:${CRAFT_ARCH_BUILD_FOR}
         - rocm-opencl-runtime:${CRAFT_ARCH_BUILD_FOR}
+        - libquadmath0:${CRAFT_ARCH_BUILD_FOR}
     override-build: |
       craftctl default
       craftctl set grade="stable"
