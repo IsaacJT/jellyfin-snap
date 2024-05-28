@@ -11,10 +11,10 @@ Snap package for the [Jellyfin media server](https://jellyfin.org/).
 Make sure that all of the Snap interfaces are connected before running:
 
 ```
-snap connect itrue-jellyfin:home
-snap connect itrue-jellyfin:removable-media
-snap connect itrue-jellyfin:mount-observe
-snap connect itrue-jellyfin:firewall-control
+for intf in home removable-media mount-observe opengl \
+    firewall-control home network network-bind; do
+  snap connect itrue-jellyfin:"${intf}"
+done
 ```
 
 Verify that there are no unconnected interfaces with the `snap connections` command. The output should look something like this:
