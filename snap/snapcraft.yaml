@@ -121,6 +121,8 @@ layout:
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri:
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri
+  /usr/share/zoneinfo-icu:
+    bind: $SNAP/usr/share/zoneinfo-icu
   /usr/share/libdrm/amdgpu.ids:
     bind-file: $SNAP/usr/share/libdrm/amdgpu.ids
   /usr/share/fonts:
