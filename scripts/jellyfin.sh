@@ -23,5 +23,5 @@ for intf in ${OPTIONAL_INTERFACES}; do
         fi
 done
 
-exec "${SNAP}"/usr/lib/jellyfin/bin/jellyfin \
+exec "${SNAP}"/usr/lib/jellyfin/bin/jellyfin --service \
         --ffmpeg "${SNAP}"/usr/lib/jellyfin-ffmpeg/ffmpeg
