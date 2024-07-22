@@ -13,14 +13,14 @@ description: |
 
   This is a community-developed snap and not officially supported or released
   by Jellyfin.
-base: core22
+base: core24
 confinement: strict
 adopt-info: jellyfin
 license: GPL-2.0
-architectures:
-  - build-on: arm64
-  - build-on: armhf
-  - build-on: amd64
+platforms:
+  amd64: {}
+  arm64: {}
+  armhf: {}
 source-code: https://github.com/IsaacJT/jellyfin-snap/tree/main
 contact: isaac@is.having.coffee
 issues: https://github.com/IsaacJT/jellyfin-snap/issues
@@ -28,7 +28,7 @@ issues: https://github.com/IsaacJT/jellyfin-snap/issues
 package-repositories:
   - type: apt
     url: https://repo.jellyfin.org/ubuntu
-    suites: [jammy]
+    suites: [noble]
     components: [main]
     key-id: 4918AABC486CA052358D778D49023CD01DE21A7B
     architectures:
@@ -51,8 +51,8 @@ parts:
       - jellyfin-web:all
       - jellyfin-ffmpeg6:${CRAFT_ARCH_BUILD_FOR}
       - va-driver-all:${CRAFT_ARCH_BUILD_FOR}
-      - libavcodec58:${CRAFT_ARCH_BUILD_FOR}
-      - libavcodec-extra58:${CRAFT_ARCH_BUILD_FOR}
+      - libavcodec60:${CRAFT_ARCH_BUILD_FOR}
+      - libavcodec-extra60:${CRAFT_ARCH_BUILD_FOR}
       - vainfo:${CRAFT_ARCH_BUILD_FOR}
       - libdrm-common:${CRAFT_ARCH_BUILD_FOR}
       - clinfo:${CRAFT_ARCH_BUILD_FOR}
