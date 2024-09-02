@@ -46,6 +46,9 @@ package-repositories:
 parts:
   jellyfin:
     plugin: nil
+    build-packages:
+      - on armhf:
+        - execstack
     stage-packages:
       - jellyfin-server:${CRAFT_ARCH_BUILD_FOR}
       - jellyfin-web:all
@@ -64,6 +67,12 @@ parts:
       craftctl default
       craftctl set grade="stable"
       craftctl set version="$(apt info jellyfin-server | grep -E "^Version:" | cut -f2 -d\ )"
+    override-prime: |
+      craftctl default
+      # Fix Snap warning on armhf https://forum.snapcraft.io/t/snap-and-executable-stacks/1812
+      if [ "${CRAFT_ARCH_BUILD_FOR}" = "armhf" ]; then
+        execstack --clear-execstack usr/lib/arm-linux-gnueabihf/libx264.so.164
+      fi
     prime:
       - -usr/share/man
       - -var/spool
