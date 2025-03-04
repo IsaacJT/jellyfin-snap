@@ -47,7 +47,7 @@ parts:
     stage-packages:
       - jellyfin-server:${CRAFT_ARCH_BUILD_FOR}
       - jellyfin-web:all
-      - jellyfin-ffmpeg6:${CRAFT_ARCH_BUILD_FOR}
+      - jellyfin-ffmpeg7:${CRAFT_ARCH_BUILD_FOR}
       - va-driver-all:${CRAFT_ARCH_BUILD_FOR}
       - libavcodec60:${CRAFT_ARCH_BUILD_FOR}
       - libavcodec-extra60:${CRAFT_ARCH_BUILD_FOR}
