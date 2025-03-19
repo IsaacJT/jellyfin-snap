@@ -120,6 +120,10 @@ environment:
   # Enable OpenCL on older AMD cards
   ROC_ENABLE_PRE_VEGA: "1"
 
+plugs:
+  home:
+    read: all
+
 layout:
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio
