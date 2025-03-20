@@ -145,3 +145,7 @@ layout:
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/intel-opencl
   /opt:
     bind: $SNAP/opt
+
+hooks:
+  check-health:
+    plugs: [mount-observe]
