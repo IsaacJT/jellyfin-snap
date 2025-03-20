@@ -1,0 +1,60 @@
+#!/bin/bash -e
+
+# If this fails at any time, the health of the snap is:
+# health:
+#   status:  unknown
+#   message: hook failed
+#   code:    snapd-hook-failed
+#   checked: <a date>
+ 
+# Some limitations on snapctl set-health:
+#   The code must be between 3 and 30 characters
+#   The code must start lowercase and only contain ASCII+numbers+dashes
+#   The message must be less than 71 characters
+ 
+# If this hook exits 0 but doesn't set snap-health, health is set to unknown
+# If the hook encounters something which causes unhealth, we should exit early.
+
+exec >> "$SNAP_COMMON/check-health.log" 2>&1
+
+# Path for all collections stored by Jellyfin. It doesn't seem that this path is
+# configurable in the Jellyfin UI, so it should be safe.
+_collection_path="$SNAP_COMMON/data/root/default"
+
+# Parsing ls is bad but we're only generating a list of file paths, and this
+# should be well determined; the list should be empty just in case we have
+# no libraries set. Unfortunately we cannot introspect '*', and have to be
+# circuitous about acquiring the collection names.
+_collections="$(ls "$_collection_path")"
+
+# If no collections have been setup, then there's no reason to think the snap is
+# unhealthy; set good health and bail.
+[ -n "$_collections" ] || {
+  snapctl set-health okay
+  exit 0
+}
+
+# Iterate over all defined collections and determine the associated path for
+# that collection.
+for option in $_collections; do
+  while IFS=\> read -rd \< NAME CONTENT; do
+    if [ "$NAME" = "Path" ]; then
+      _paths="$_paths $CONTENT"
+    fi
+  done < "$_collection_path/$option/options.xml"
+done
+
+# Check if each collection's associated path is mounted.
+for library in $_paths; do
+  if ! grep -q "$library" /etc/mtab; then
+      # If $library is > 48 characters, the message will truncate
+      snapctl set-health --code="collection-not-mounted" waiting "Please mount $library"
+      # exit zero to preserve installability. Nonzero exit codes in hooks cause
+      # installations and refreshes to fail. A collection being unavailable
+      # isn't a failure, but a worrisome health case. Install, but notify.
+      exit 0
+  fi
+done
+
+# At this point, all collections should be mounted and all media is accessible.
+snapctl set-health okay
