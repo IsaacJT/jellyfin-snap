@@ -13,6 +13,9 @@ description: |
 
   This is a community-developed snap and not officially supported or released
   by Jellyfin.
+title: Jellyfin Server
+donation: https://jellyfin.org/contribute
+website: https://jellyfin.org
 base: core24
 confinement: strict
 adopt-info: jellyfin
