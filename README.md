@@ -41,5 +41,5 @@ Hardware acceleration support can be tested and debugged using the `itrue-jellyf
 
 - Hardware acceleration support
   - Intel partially supported (YMMV)
-  - AMD is a work-in-progress
+  - ~AMD is a work-in-progress~ AMD packages have been removed because their Apt repository always has some kind of issue and breaks the automatic snap builds
   - Nvidia is not supported due to the proprietary binaries

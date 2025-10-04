@@ -41,13 +41,6 @@ package-repositories:
     architectures:
       - arm64
       - amd64
-  - type: apt
-    url: https://repo.radeon.com/rocm/apt/debian
-    suites: [jammy]
-    components: [main]
-    key-id: CA8BB4727A47B4D09B4EE8969386B48A1A693C5C
-    architectures:
-      - amd64
 
 parts:
   jellyfin:
@@ -64,7 +57,6 @@ parts:
       - clinfo:${CRAFT_ARCH_BUILD_FOR}
       - on amd64:
         - intel-opencl-icd:${CRAFT_ARCH_BUILD_FOR}
-        - rocm-opencl-runtime:${CRAFT_ARCH_BUILD_FOR}
         - libquadmath0:${CRAFT_ARCH_BUILD_FOR}
     override-build: |
       craftctl default
