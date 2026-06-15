@@ -3,7 +3,7 @@
 # Copyright (C) 2021 Canonical Ltd
 
 name: itrue-jellyfin
-summary:  "Jellyfin: The Free Software Media System"
+summary: "Jellyfin: The Free Software Media System"
 description: |
   Jellyfin is the volunteer-built media solution that puts you in control of
   your media. Stream to any device from your own server, with no strings
@@ -26,7 +26,7 @@ platforms:
       - amd64
     build-for:
       - amd64
-  arm64: 
+  arm64:
     build-on:
       - arm64
     build-for:
@@ -57,11 +57,7 @@ parts:
       - libavcodec62:${CRAFT_ARCH_BUILD_FOR}
       - libavcodec-extra62:${CRAFT_ARCH_BUILD_FOR}
       - vainfo:${CRAFT_ARCH_BUILD_FOR}
-      - libdrm-common:${CRAFT_ARCH_BUILD_FOR}
       - clinfo:${CRAFT_ARCH_BUILD_FOR}
-      - on amd64:
-        - intel-opencl-icd:${CRAFT_ARCH_BUILD_FOR}
-        - libquadmath0:${CRAFT_ARCH_BUILD_FOR}
     override-build: |
       craftctl default
       craftctl set grade="stable"
@@ -85,6 +81,8 @@ parts:
 apps:
   vainfo:
     command: usr/bin/vainfo
+    extensions:
+      - gpu
     plugs:
       - opengl
     environment: &_environment
@@ -93,17 +91,23 @@ apps:
       LIBVA_DRIVERS_PATH: /usr/lib/jellyfin-ffmpeg/lib:/usr/lib/jellyfin-ffmpeg/lib/dri:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri:$LIBVA_DRIVERS_PATH
   ffmpeg:
     command: usr/lib/jellyfin-ffmpeg/ffmpeg
+    extensions:
+      - gpu
     plugs:
       - opengl
     environment: *_environment
   clinfo:
     command: usr/bin/clinfo
     environment: *_environment
+    extensions:
+      - gpu
     plugs:
       - opengl
   itrue-jellyfin:
     command: usr/local/bin/jellyfin.sh
     daemon: simple
+    extensions:
+      - gpu
     plugs:
       - network
       - network-bind
@@ -119,10 +123,6 @@ apps:
       JELLYFIN_CONFIG_DIR: "${SNAP_COMMON}/config"
       JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
       JELLYFIN_WEB_DIR: "${SNAP}/usr/share/jellyfin/web"
-
-environment:
-  # Enable OpenCL on older AMD cards
-  ROC_ENABLE_PRE_VEGA: "1"
 
 layout:
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:
@@ -149,3 +149,11 @@ layout:
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/intel-opencl
   /opt:
     bind: $SNAP/opt
+
+lint:
+  ignore:
+    # Custom libaries for jellyfin-ffmpeg
+    - library:
+        - usr/lib/jellyfin-ffmpeg/lib/*
+    - gpu:
+        - usr/lib/jellyfin-ffmpeg/lib/*
