@@ -83,6 +83,8 @@ apps:
       - gpu
     plugs:
       - opengl
+      - x11
+      - wayland
     environment: &_environment
       LD_LIBRARY_PATH: /usr/lib/jellyfin-ffmpeg/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/vdpau:$LD_LIBRARY_PATH
       LIBGL_DRIVERS_PATH: /usr/lib/jellyfin-ffmpeg/lib:/usr/lib/jellyfin-ffmpeg/lib/dri:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri:$LIBGL_DRIVERS_PATH
