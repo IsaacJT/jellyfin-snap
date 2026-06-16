@@ -35,11 +35,4 @@ Due to Snap restrictions, any external storage needs to be mounted to a director
 
 The web UI will be available at the default Jellyfin address <http://localhost:8096>.
 
-Hardware acceleration support can be tested and debugged using the `itrue-jellyfin.vainfo`, `itrue-jellyfin.ffmpeg`, and `itrue-jellyfin.clinfo` commands. This is still very much a WIP so please create an issue if you have any issues (or successes - please let me know!) with this.
-
-## TODO
-
-- Hardware acceleration support
-  - Intel partially supported (YMMV)
-  - ~AMD is a work-in-progress~ AMD packages have been removed because their Apt repository always has some kind of issue and breaks the automatic snap builds
-  - Nvidia is not supported due to the proprietary binaries
+Hardware acceleration support can be tested and debugged using the `itrue-jellyfin.vainfo`, `itrue-jellyfin.ffmpeg`, and `itrue-jellyfin.clinfo` commands.
