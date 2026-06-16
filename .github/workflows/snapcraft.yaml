@@ -14,6 +14,17 @@ jobs:
     steps:
       # yamllint disable rule:line-length
       - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0  # v6.0.3
+      - name: Diagnostics
+        run: |
+          echo "::group::snapcraft version"
+          snapcraft version || true
+          echo "::endgroup::"
+          echo "::group::lxd/lxc version"
+          lxc version || true
+          echo "::endgroup::"
+          echo "::group::disk space"
+          df -h
+          echo "::endgroup::"
       - uses: snapcore/action-build@d12445ae70c52b1ead8b8a0ac6635f0432af5c80  # v1.3.0
       - name: Upload snapcraft logs on failure
         if: failure()
