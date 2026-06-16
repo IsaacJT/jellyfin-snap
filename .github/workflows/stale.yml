@@ -1,14 +1,16 @@
+---
 # SPDX-License-Identifier: GPL-2.0-only
-# This workflow warns and then closes issues and PRs that have had no activity for a specified amount of time.
+# This workflow warns and then closes issues and PRs that have had no
+# activity for a specified amount of time.
 #
 # You can adjust the behavior by modifying this file.
 # For more information, see:
 # https://github.com/actions/stale
 name: Mark stale issues and pull requests
 
-on:
+"on":
   schedule:
-  - cron: '35 21 * * *'
+    - cron: '35 21 * * *'
 
 permissions:
   contents: read
@@ -22,27 +24,29 @@ jobs:
       pull-requests: write
 
     steps:
-    - uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        days-before-stale: 60
-        days-before-close: 14
-        stale-issue-message: >
-          This issue has been automatically marked as stale because it has had
-          no activity for 60 days. It will be closed in 14 days if no further
-          activity occurs. If it is still relevant, please leave a comment.
-        stale-pr-message: >
-          This pull request has been automatically marked as stale because it
-          has had no activity for 60 days. It will be closed in 14 days if no
-          further activity occurs. If it is still relevant, please leave a
-          comment or push an update.
-        close-issue-message: >
-          This issue was closed because it has been stale for 14 days with no
-          activity. Feel free to reopen it if it is still relevant.
-        close-pr-message: >
-          This pull request was closed because it has been stale for 14 days
-          with no activity. Feel free to reopen it if you wish to continue.
-        stale-issue-label: 'no-issue-activity'
-        stale-pr-label: 'no-pr-activity'
-        exempt-issue-labels: 'pinned,security,keep'
-        exempt-pr-labels: 'pinned,security,keep'
+      - uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639  # v9.1.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          days-before-stale: 60
+          days-before-close: 14
+          stale-issue-message: >
+            This issue has been automatically marked as stale because it has
+            had no activity for 60 days. It will be closed in 14 days if no
+            further activity occurs. If it is still relevant, please leave a
+            comment.
+          stale-pr-message: >
+            This pull request has been automatically marked as stale because
+            it has had no activity for 60 days. It will be closed in 14 days
+            if no further activity occurs. If it is still relevant, please
+            leave a comment or push an update.
+          close-issue-message: >
+            This issue was closed because it has been stale for 14 days with
+            no activity. Feel free to reopen it if it is still relevant.
+          close-pr-message: >
+            This pull request was closed because it has been stale for 14
+            days with no activity. Feel free to reopen it if you wish to
+            continue.
+          stale-issue-label: 'no-issue-activity'
+          stale-pr-label: 'no-pr-activity'
+          exempt-issue-labels: 'pinned,security,keep'
+          exempt-pr-labels: 'pinned,security,keep'
