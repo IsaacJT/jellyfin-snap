@@ -1,5 +1,5 @@
 ---
-# SPDX-License-Identifier: GPL-2.0
+# SPDX-License-Identifier: GPL-2.0-only
 
 name: itrue-jellyfin
 summary: "Jellyfin: The Free Software Media System"
@@ -18,7 +18,7 @@ website: https://jellyfin.org
 base: core26
 confinement: strict
 adopt-info: jellyfin
-license: GPL-2.0
+license: GPL-2.0-only
 platforms:
   amd64:
     build-on:
