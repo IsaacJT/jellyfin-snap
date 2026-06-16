@@ -65,6 +65,7 @@ parts:
     # yamllint enable rule:line-length
     prime:
       - -usr/share/man
+      - -usr/share/doc
       - -var/spool
 
   scripts:
@@ -109,6 +110,8 @@ apps:
   itrue-jellyfin:
     command: usr/local/bin/jellyfin.sh
     daemon: simple
+    stop-timeout: 60s
+    restart-condition: on-failure
     extensions:
       - gpu
     plugs:
