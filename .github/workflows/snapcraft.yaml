@@ -12,5 +12,5 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: snapcore/action-build@v1
+    - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
+    - uses: snapcore/action-build@d12445ae70c52b1ead8b8a0ac6635f0432af5c80 # v1.3.0
