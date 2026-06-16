@@ -12,7 +12,7 @@ Make sure that all of the Snap interfaces are connected before running:
 
 ```
 for intf in home removable-media mount-observe opengl \
-    firewall-control home network network-bind; do
+    firewall-control network network-bind; do
   snap connect itrue-jellyfin:"${intf}"
 done
 ```
