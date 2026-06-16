@@ -57,10 +57,12 @@ parts:
       - libavcodec-extra62:${CRAFT_ARCH_BUILD_FOR}
       - vainfo:${CRAFT_ARCH_BUILD_FOR}
       - clinfo:${CRAFT_ARCH_BUILD_FOR}
+    # yamllint disable rule:line-length
     override-build: |
       craftctl default
       craftctl set grade="stable"
       craftctl set version="$(apt info jellyfin-server | grep -E "^Version:" | cut -f2 -d\ )"
+    # yamllint enable rule:line-length
     prime:
       - -usr/share/man
       - -var/spool
@@ -84,10 +86,12 @@ apps:
       - opengl
       - x11
       - wayland
+    # yamllint disable rule:line-length
     environment: &_environment
       LD_LIBRARY_PATH: /usr/lib/jellyfin-ffmpeg/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/vdpau:$LD_LIBRARY_PATH
       LIBGL_DRIVERS_PATH: /usr/lib/jellyfin-ffmpeg/lib:/usr/lib/jellyfin-ffmpeg/lib/dri:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri:$LIBGL_DRIVERS_PATH
       LIBVA_DRIVERS_PATH: /usr/lib/jellyfin-ffmpeg/lib:/usr/lib/jellyfin-ffmpeg/lib/dri:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri:$LIBVA_DRIVERS_PATH
+      # yamllint enable rule:line-length
   ffmpeg:
     command: usr/lib/jellyfin-ffmpeg/ffmpeg
     extensions:
