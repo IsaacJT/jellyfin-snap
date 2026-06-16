@@ -1,4 +1,4 @@
-#!/bin/sh -ex
+#!/bin/sh -e
 # SPDX-License-Identifier: GPL-2.0-only
 
 REQUIRED_INTERFACES="network network-bind"
