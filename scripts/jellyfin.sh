@@ -39,4 +39,9 @@ if [ -n "${missing_optional}" ]; then
 fi
 
 exec "${SNAP}"/usr/lib/jellyfin/bin/jellyfin --service \
-        --ffmpeg "${SNAP}"/usr/lib/jellyfin-ffmpeg/ffmpeg
+        --ffmpeg "${SNAP}"/usr/lib/jellyfin-ffmpeg/ffmpeg \
+        --datadir "${SNAP_COMMON}"/data \
+        --configdir "${SNAP_COMMON}"/config \
+        --cachedir "${SNAP_COMMON}"/cache \
+        --logdir "${SNAP_DATA}"/logs \
+        --webdir "${SNAP}"/usr/share/jellyfin/web
