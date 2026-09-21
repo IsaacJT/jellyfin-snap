@@ -65,7 +65,6 @@ parts:
     # yamllint enable rule:line-length
     prime:
       - -usr/share/man
-      - -usr/share/doc
       - -var/spool
 
   curl:
