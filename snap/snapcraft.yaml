@@ -131,11 +131,10 @@ apps:
       - firewall-control
     environment:
       <<: *_environment
-      JELLYFIN_LOG_DIR: "${SNAP_DATA}/logs"
-      JELLYFIN_CACHE_DIR: "${SNAP_COMMON}/cache"
-      JELLYFIN_CONFIG_DIR: "${SNAP_COMMON}/config"
-      JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
-      JELLYFIN_WEB_DIR: "${SNAP}/usr/share/jellyfin/web"
+      # Use jemalloc for reduced RAM usage as per /etc/defaults/jellyfin
+      LD_PRELOAD: "${SNAP}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/libjemalloc.so.2"
+      # Disable glibc dynamic heap adjustment as per /etc/defaults/jellyfin
+      MALLOC_TRIM_THRESHOLD_: "131072"
   health-check:
     # Reports the daemon's health to snapd via "snapctl set-health".
     command: usr/local/bin/check-health.sh
