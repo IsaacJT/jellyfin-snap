@@ -1,0 +1,84 @@
+---
+summary: Check that the health-check app reports the daemon's real status
+
+execute: |
+    # Wait for the daemon to become healthy first (see spread/tests/startup
+    # for why polling is needed instead of trusting "snap services").
+    for i in $(seq 1 60); do
+        if curl -sf http://localhost:8096/health | MATCH "Healthy"; then
+            break
+        fi
+        if [ "$i" -eq 60 ]; then
+            journalctl --no-pager -u snap.itrue-jellyfin.itrue-jellyfin.service
+            ERROR "Jellyfin did not become healthy within 60 seconds"
+        fi
+        sleep 1
+    done
+
+    # Manually invoke the health-check app (the same "daemon: oneshot,
+    # timer: ..." app snapd runs on its own schedule) and confirm it
+    # reports "okay" while the daemon is up. "snap info" only prints the
+    # health block unprompted when unhealthy, so use --verbose to always
+    # see it.
+    snap run itrue-jellyfin.health-check
+    for i in $(seq 1 10); do
+        if snap info --verbose itrue-jellyfin | MATCH "status:\s+okay"; then
+            break
+        fi
+        [ "$i" -eq 10 ] && ERROR "health-check did not report 'okay' while the daemon was healthy"
+        sleep 1
+    done
+
+    # Stop the daemon, then re-run the check: it should now report that
+    # the daemon isn't running, using the exact code our script sets.
+    snap stop itrue-jellyfin
+    snap run itrue-jellyfin.health-check
+    snap info itrue-jellyfin | MATCH "status:\s+error"
+    snap info itrue-jellyfin | MATCH "code:\s+daemon-not-running"
+    snap info itrue-jellyfin | MATCH "message:"
+
+    # Restart the daemon, wait for it to become healthy again, and confirm
+    # the check reports "okay" once more -- i.e. it correctly recovers and
+    # isn't stuck reporting a stale error.
+    snap start itrue-jellyfin
+    for i in $(seq 1 60); do
+        if curl -sf http://localhost:8096/health | MATCH "Healthy"; then
+            break
+        fi
+        if [ "$i" -eq 60 ]; then
+            journalctl --no-pager -u snap.itrue-jellyfin.itrue-jellyfin.service
+            ERROR "Jellyfin did not recover after being restarted"
+        fi
+        sleep 1
+    done
+
+    snap run itrue-jellyfin.health-check
+    for i in $(seq 1 10); do
+        if snap info --verbose itrue-jellyfin | MATCH "status:\s+okay"; then
+            break
+        fi
+        [ "$i" -eq 10 ] && ERROR "health-check did not recover to 'okay' after the daemon restarted"
+        sleep 1
+    done
+
+    # Disconnecting a required interface should be reported as "blocked"
+    # (something the user needs to fix), distinct from "error"/"waiting",
+    # and should short-circuit rather than waiting through the curl retry
+    # loop first.
+    snap disconnect itrue-jellyfin:network-bind
+    snap run itrue-jellyfin.health-check
+    snap info itrue-jellyfin | MATCH "status:\s+blocked"
+    snap info itrue-jellyfin | MATCH "code:\s+interface-not-connected"
+    snap info itrue-jellyfin | MATCH "message:"
+
+    # Reconnecting should let the check recover back to "okay" (the daemon
+    # itself is still running throughout, so no restart needed here).
+    snap connect itrue-jellyfin:network-bind
+    snap run itrue-jellyfin.health-check
+    for i in $(seq 1 10); do
+        if snap info --verbose itrue-jellyfin | MATCH "status:\s+okay"; then
+            break
+        fi
+        [ "$i" -eq 10 ] && ERROR "health-check did not recover to 'okay' after reconnecting network-bind"
+        sleep 1
+    done

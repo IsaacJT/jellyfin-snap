@@ -1,0 +1,34 @@
+---
+summary: Check that the Jellyfin web client is served correctly
+
+execute: |
+    # The daemon should already be active (installed in the suite's
+    # prepare), but give the web server a moment to finish starting before
+    # probing it.
+    for i in $(seq 1 60); do
+        if curl -sf http://localhost:8096/health | MATCH "Healthy"; then
+            break
+        fi
+        if [ "$i" -eq 60 ]; then
+            journalctl --no-pager -u snap.itrue-jellyfin.itrue-jellyfin.service
+            ERROR "Jellyfin did not become healthy within 60 seconds"
+        fi
+        sleep 1
+    done
+
+    # "/" should redirect to the web client (mainApp.UseDefaultFiles maps
+    # RequestPath "/web" to the --webdir path's index.html).
+    curl -sf -o /dev/null -w '%{http_code}\n' http://localhost:8096/ \
+        | MATCH "^(200|302)$"
+
+    # The web client's static files should be served from the --webdir
+    # path ($SNAP/usr/share/jellyfin/web, set in scripts/jellyfin.sh),
+    # confirming that flag and the app's "command" wiring are correct.
+    curl -sf http://localhost:8096/web/index.html | MATCH "<title>Jellyfin</title>"
+    curl -sf http://localhost:8096/web/index.html | MATCH 'id="reactRoot"'
+
+    # A handful of the web client's static assets should also be reachable,
+    # confirming the whole asset tree -- not just index.html -- was staged
+    # and is servable.
+    curl -sf -o /dev/null -w '%{http_code}\n' http://localhost:8096/web/manifest.json \
+        | MATCH "^200$"
