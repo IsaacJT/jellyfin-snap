@@ -4,25 +4,39 @@
 REQUIRED_INTERFACES="network network-bind"
 OPTIONAL_INTERFACES="home removable-media mount-observe opengl firewall-control"
 
+missing_required=""
 for intf in ${REQUIRED_INTERFACES}; do
         if ! snapctl is-connected "${intf}"; then
-                echo "Required interface is not connected: ${intf}"
-                echo ""
-                echo "Please connect this interface using the following command:"
-                echo "snap connect ${SNAP_NAME}:${intf}"
-                exit 1
+                missing_required="${missing_required} ${intf}"
         fi
 done
 
+if [ -n "${missing_required}" ]; then
+        echo "Required interfaces are not connected:${missing_required}"
+        echo ""
+        echo "Please connect them using the following commands:"
+        for intf in ${missing_required}; do
+                echo "snap connect ${SNAP_NAME}:${intf}"
+        done
+        exit 1
+fi
+
+missing_optional=""
 for intf in ${OPTIONAL_INTERFACES}; do
         if ! snapctl is-connected "${intf}"; then
-                echo "Optional interface is not connected: ${intf}"
-                echo "This is recommended to ensure best usage of this program."
-                echo ""
-                echo "Please connect this interface using the following command:"
-                echo "snap connect ${SNAP_NAME}:${intf}"
+                missing_optional="${missing_optional} ${intf}"
         fi
 done
+
+if [ -n "${missing_optional}" ]; then
+        echo "Optional interfaces are not connected:${missing_optional}"
+        echo "Connecting them is recommended to ensure best usage of this program."
+        echo ""
+        echo "Please connect them using the following commands:"
+        for intf in ${missing_optional}; do
+                echo "snap connect ${SNAP_NAME}:${intf}"
+        done
+fi
 
 exec "${SNAP}"/usr/lib/jellyfin/bin/jellyfin --service \
         --ffmpeg "${SNAP}"/usr/lib/jellyfin-ffmpeg/ffmpeg
