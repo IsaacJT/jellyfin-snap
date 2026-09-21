@@ -1,0 +1,29 @@
+---
+summary: Check that the Jellyfin daemon starts and becomes healthy
+
+execute: |
+    # snap install (done in the suite's prepare) auto-enables and starts
+    # daemon apps, so the service should already be active.
+    snap services itrue-jellyfin | MATCH "itrue-jellyfin\.itrue-jellyfin\s+enabled\s+active"
+
+    # The daemon is type "simple", so snapd considers it started as soon as
+    # the process is spawned -- it doesn't wait for Jellyfin to actually be
+    # ready to serve requests. Poll the unauthenticated health endpoint
+    # until it reports healthy, or fail after a timeout.
+    for i in $(seq 1 60); do
+        if curl -sf http://localhost:8096/health | MATCH "Healthy"; then
+            break
+        fi
+        if [ "$i" -eq 60 ]; then
+            journalctl --no-pager -u snap.itrue-jellyfin.itrue-jellyfin.service
+            ERROR "Jellyfin did not become healthy within 60 seconds"
+        fi
+        sleep 1
+    done
+
+    # Sanity-check the ping endpoint too, and confirm it identifies itself.
+    curl -sf http://localhost:8096/System/Ping | MATCH "Jellyfin Server"
+
+    # The service should still be running (i.e. not crash-looped) after
+    # having served requests.
+    snap services itrue-jellyfin | MATCH "itrue-jellyfin\.itrue-jellyfin\s+enabled\s+active"

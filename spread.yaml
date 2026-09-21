@@ -1,0 +1,23 @@
+---
+project: itrue-jellyfin
+
+backends:
+  craft:
+    type: craft
+    systems:
+      - ubuntu-26.04
+
+suites:
+  spread/tests/:
+    summary: Snap tests
+    prepare: |
+      snap install "$CRAFT_ARTIFACT" --dangerous --jailmode
+      snap connect itrue-jellyfin:network
+      snap connect itrue-jellyfin:network-bind
+    restore: |
+      snap remove itrue-jellyfin --purge --terminate
+
+exclude:
+  - .git
+
+kill-timeout: 15m
