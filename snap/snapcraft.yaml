@@ -68,6 +68,13 @@ parts:
       - -usr/share/doc
       - -var/spool
 
+  curl:
+    plugin: nil
+    stage-packages:
+      - curl:${CRAFT_ARCH_BUILD_FOR}
+    prime:
+      - -usr/share/man
+
   scripts:
     plugin: nil
     source: scripts
@@ -129,6 +136,13 @@ apps:
       JELLYFIN_CONFIG_DIR: "${SNAP_COMMON}/config"
       JELLYFIN_DATA_DIR: "${SNAP_COMMON}/data"
       JELLYFIN_WEB_DIR: "${SNAP}/usr/share/jellyfin/web"
+  health-check:
+    # Reports the daemon's health to snapd via "snapctl set-health".
+    command: usr/local/bin/check-health.sh
+    daemon: oneshot
+    timer: 00:00-24:00/288  # roughly every 5 minutes
+    plugs:
+      - network
 
 layout:
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:
