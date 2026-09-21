@@ -25,7 +25,8 @@ jobs:
     steps:
       # yamllint disable rule:line-length
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: canonical/craft-actions/snapcraft/pack@acd2f2e61c7563b38ba89390ca0e910fa7d2784f # v0.1.1
+      - id: build
+        uses: canonical/craft-actions/snapcraft/pack@acd2f2e61c7563b38ba89390ca0e910fa7d2784f # v0.1.1
         with:
           # Temporarily use the candidate channel until some hotfixes related to
           # arm64/armhf packaging repositories make their way into stable
@@ -33,9 +34,16 @@ jobs:
       - name: Upload snapcraft logs on failure
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
-        # yamllint enable rule:line-length
         with:
-          name: snapcraft-log
+          name: snapcraft-log-${{ matrix.build-host.value }}
           path: ~/.local/state/snapcraft/log/
           if-no-files-found: warn
           retention-days: 14
+      - uses: snapcore/action-publish@214b86e5ca036ead1668c79afb81e550e6c54d40 # v1.2.0
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
+        with:
+          snap: ${{ steps.build.outputs.snaps }}
+          release: edge
+        # yamllint enable rule:line-length
