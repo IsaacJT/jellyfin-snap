@@ -37,6 +37,10 @@ jobs:
           df -h
           echo "::endgroup::"
       - uses: canonical/craft-actions/snapcraft/pack@acd2f2e61c7563b38ba89390ca0e910fa7d2784f # v0.1.1
+        with:
+          # Temporarily use the candidate channel until some hotfixes related to
+          # arm64/armhf packaging repositories make their way into stable
+          channel: 9.x/candidate
       - name: Upload snapcraft logs on failure
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
