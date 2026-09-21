@@ -13,7 +13,15 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: Build snap on ${{ matrix.build-host.name }}
+    runs-on: ${{ matrix.build-host.value }}
+    strategy:
+      matrix:
+        build-host:
+          - name: Ubuntu 26.04 arm64
+            value: ubuntu-26.04-arm
+          - name: Ubuntu 26.04 amd64
+            value: ubuntu-26.04
     steps:
       # yamllint disable rule:line-length
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
