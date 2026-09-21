@@ -28,9 +28,7 @@ jobs:
           echo "::group::disk space"
           df -h
           echo "::endgroup::"
-      - uses: snapcore/action-build@d12445ae70c52b1ead8b8a0ac6635f0432af5c80  # v1.3.0
-        env:
-          SNAPCRAFT_ENABLE_DEVELOPER_DEBUG: "1"
+      - uses: canonical/craft-actions/snapcraft/pack@acd2f2e61c7563b38ba89390ca0e910fa7d2784f # v0.1.1
       - name: Upload snapcraft logs on failure
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
